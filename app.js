@@ -1,12 +1,19 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+let express = require("express");
+let path = require("path");
+let cookieParser = require("cookie-parser");
+let logger = require("morgan");
+const admin = require("firebase-admin");
+const SERVICE_ACCOUNT = require("./firebase-adminsdk.json.json");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
 
-var app = express();
+// Connects to Firebase and authenticates the server-side application with the service account credentials
+admin.initializeApp({
+	credential: admin.credential.cert(SERVICE_ACCOUNT),
+});
+
+let app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
